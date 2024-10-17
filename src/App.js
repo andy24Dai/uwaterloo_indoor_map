@@ -44,24 +44,26 @@ function App() {
   const [endSelect, setEnd] = useState('');
 
   return (
-    <div className="w-screen h-screen aspect-auto bg-slate-800 text-slate-50 font-mono">
+    <div className="min-w-screen min-h-screen aspect-auto bg-slate-800 text-slate-50 font-mono ">
       <header className="pt-6 pb-2 grid place-content-center text-2xl font-bold font-mono tracking-wide">NO GRASS?</header>
       <div className="grid place-content-center">
-        <div className="grid-cols-2 place-content-around">
-        <BuildDropdown
-          prompt='Starting Location'
-          options={buildings}
-          selectedOption={startSelect}
-          setSelectedOption={setStart} />
+        <div className="grid place-content-center">
+          <BuildDropdown
+            prompt='Starting Location'
+            options={buildings}
+            selectedOption={startSelect}
+            setSelectedOption={setStart} />
 
-        <BuildDropdown
-          prompt='Ending Location'
-          options={buildings}
-          selectedOption={endSelect}
-          setSelectedOption={setEnd} />
-        <GetOutput start={startSelect} end={endSelect} />
+          <BuildDropdown
+            prompt='Ending Location'
+            options={buildings}
+            selectedOption={endSelect}
+            setSelectedOption={setEnd} />
+          <GetOutput start={startSelect} end={endSelect} />
         </div>
-        <img className="pt-6" src="public/map.png" alt="UW Map"></img>
+        <div className="pt-6 pb-6 grid place-content-center">
+          <img className=" rounded-md max-w-xs h-auto" src="./map.png" alt="UW Map"></img>
+        </div>
       </div>
     </div>
   );
