@@ -14,9 +14,9 @@ const graph = {
     EIT: { CIM: 1, PHY: 1, ESC: 1 },
     CIM: { E3: 1, EIT: 1, DC: 1 },
     DC: { M3: 1, CIM: 1, C2: 1, MC: 1 },
-    ESC: { EIT: 1, C2: 1, B1: 1 },
+    ESC: { EIT: 1, B1: 1, C2: 1 },
     B1: { ESC: 1, B2: 1 },
-    B2: { QNC: 1, STC: 1, NH: 1 },
+    B2: { QNC: 1, STC: 1, B1:1},
     STC: { B2: 1, NH: 1 },
     NH: { STC: 1 },
     C2: { ESC: 1, DC: 1, MC: 1 },
@@ -40,6 +40,7 @@ const graph = {
 };
 
 function getPath(start, end) {
+
     if(start === '' || end === ''){
         return [];
     }
@@ -52,15 +53,24 @@ function getPath(start, end) {
 
     const prevs = {};
 
-    let nodeQueue = new PriorityQueue((a, b) => a.value - b.value);
+    let nodeQueue = new PriorityQueue((a, b) => a.dist - b.dist);
+    nodeQueue.enq({node:start, dist:dists[start]})
 
-    let currNode = start;
+    // let currNode = start;
 
-    while (currNode !== end) {
+    while (!nodeQueue.isEmpty()) {
+
+        let currNode = nodeQueue.deq()['node'];
+
+        if(currNode === end)
+            break;
+
         // update distances and prev node
         for (var [node, dist] of Object.entries(graph[currNode])) {
-            if (!visited.has(node) && dists[currNode] + dist < dists[node]) {
-                dists[node] = dists[currNode] + dist;
+            const newDist = dists[currNode] + dist;
+
+            if (!visited.has(node) &&  newDist < dists[node]) {
+                dists[node] = newDist;
                 prevs[node] = currNode;
             }
         }
@@ -69,13 +79,12 @@ function getPath(start, end) {
         visited.add(currNode);
 
         // chooses new currNode
-        for (var node in graph[currNode]) {
-            if (!visited.has(node)) {
-                nodeQueue.enq(node);
+        for (var neighbor in graph[currNode]) {
+            if (!visited.has(neighbor)) {
+                nodeQueue.enq({ node: neighbor, dist: dists[neighbor] });
             }
         }
 
-        currNode = nodeQueue.deq();
     }
 
     let nextDest = end;
@@ -95,5 +104,6 @@ function getGraph() {
     return graph;
 }
 
+// console.log(getPath('B2', 'SLC'));
 export default getPath;
 export { getGraph };
