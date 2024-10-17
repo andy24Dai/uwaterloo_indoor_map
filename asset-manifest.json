@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/uwaterloo_indoor_map/static/css/main.4b627be1.css",
+    "main.js": "/uwaterloo_indoor_map/static/js/main.fe88c523.js",
+    "static/js/453.a3f03dbf.chunk.js": "/uwaterloo_indoor_map/static/js/453.a3f03dbf.chunk.js",
+    "index.html": "/uwaterloo_indoor_map/index.html",
+    "main.4b627be1.css.map": "/uwaterloo_indoor_map/static/css/main.4b627be1.css.map",
+    "main.fe88c523.js.map": "/uwaterloo_indoor_map/static/js/main.fe88c523.js.map",
+    "453.a3f03dbf.chunk.js.map": "/uwaterloo_indoor_map/static/js/453.a3f03dbf.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.4b627be1.css",
+    "static/js/main.fe88c523.js"
+  ]
+}
