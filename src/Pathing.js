@@ -39,6 +39,27 @@ const graph = {
     EV3: { EV2: 1 },
 };
 
+
+function contains(queue, callback) {
+  let found = false;
+  const tempQueue = new PriorityQueue(queue.comparator);
+
+  while (!queue.isEmpty()) {
+    const element = queue.deq();
+    if (callback(element)) {
+      found = true;
+    }
+    tempQueue.enq(element); // Re-enq to maintain the queue state
+  }
+
+  // Restore the original queue state
+  while (!tempQueue.isEmpty()) {
+    queue.enq(tempQueue.deq());
+  }
+
+  return found;
+}
+
 function getPath(start, end) {
 
     if(start === '' || end === ''){
@@ -61,15 +82,18 @@ function getPath(start, end) {
     while (!nodeQueue.isEmpty()) {
 
         let currNode = nodeQueue.deq()['node'];
+        console.log(`current queue: ${JSON.stringify(nodeQueue._elements)}`) 
+        console.log(`current dists: ${JSON.stringify(dists)}`)
 
-        if(currNode === end)
-            break;
+        //if(currNode === end)
+         //   break;
 
         // update distances and prev node
         for (var [node, dist] of Object.entries(graph[currNode])) {
             const newDist = dists[currNode] + dist;
 
-            if (!visited.has(node) &&  newDist < dists[node]) {
+            if (newDist < dists[node]) {
+                console.log(`updating distance for ${JSON.stringify(node)} from ${dists[node]} to ${newDist}`)
                 dists[node] = newDist;
                 prevs[node] = currNode;
             }
@@ -80,7 +104,8 @@ function getPath(start, end) {
 
         // chooses new currNode
         for (var neighbor in graph[currNode]) {
-            if (!visited.has(neighbor)) {
+            if (!visited.has(neighbor) && !contains(nodeQueue, ((entry) => entry.node === neighbor))) {
+                console.log(`currNode: ${currNode}, Enqueuing: ${node}, Distance: ${dists[node]}`);
                 nodeQueue.enq({ node: neighbor, dist: dists[neighbor] });
             }
         }
